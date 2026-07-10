@@ -21,7 +21,11 @@ app.command("/coffeebot-help",async({ack,respond})=>{
     await ack()
     await respond({
         text:
-        'Available Commands:\n /coffeebot-ping - Check bot latency \n /coffeebot-caffinate - get a picture of coffee'
+        `*Available Commands:*
+        /coffeebot-ping - Check bot latency
+        /coffeebot-caffinate - get a picture of coffee
+        /coffeebot-catcafe - get a random cat fact!
+        `
     });
 })
 
@@ -48,9 +52,20 @@ app.command("/coffeebot-caffinate",async ({command,ack,respond}) => {
         console.log(err)
         await respond({text:"we ran out of coffee :(\ntry another time!"})
     }
-
     
 });
+
+app.command("/coffeebot-catcafe",async ({command,ack,respond})=>{
+    await ack()
+    try {
+        const response= await axios.get("https://catfact.ninja/fact");
+        await respond({"text":`Welcome to the cat cafe! Here is your cat fact!\n${response.data.fact}`});
+    } catch(err){
+        await respond({"text":"The cat cafe is currently closed!\nPlease try again later"})
+    }
+}
+
+);
 
 
 (async () => {
